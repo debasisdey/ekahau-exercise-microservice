@@ -1,0 +1,32 @@
+version: '2.0'
+services:
+  mysqldbservice:
+    image: mysql-test-db:latest
+    container_name: mysql-test-db
+    environment:
+      - MARIADB_ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - "3306:3306"
+    restart: always
+
+  userservice:
+    image: user-service:latest
+    container_name: user-service-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-test-db:3306/ekahau_exercise?autoReconnect=true&useSSL=false
+    restart: always
+    depends_on:
+      - "mysqldbservice"
+
+  bookservice:
+    image: book-service:latest
+    container_name: book-service-app
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-test-db:3306/ekahau_exercise?autoReconnect=true&useSSL=false
+    restart: always
+    depends_on:
+      - "mysqldbservice"

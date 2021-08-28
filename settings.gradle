@@ -1,0 +1,5 @@
+rootProject.name = 'ekahau-exercise-microservice'
+include 'user-service'
+include 'book-service'
+include 'common-config'
+
