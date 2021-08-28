@@ -3,6 +3,7 @@ package com.ekahau.exercise.controller;
 import com.ekahau.exercise.book.Book;
 import com.ekahau.exercise.book.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -37,7 +39,9 @@ public class BookController {
 
 	@GetMapping(value = "/book/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
 	Book getBooksByTitle(@PathVariable String title){
-		return bookRepository.findByTitle(title);
+		Book book = bookRepository.findByTitle(title);
+		if (book == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Book found with this title");
+		return book;
 	}
 
 	@DeleteMapping(value = "/delete/all/books")
@@ -53,6 +57,7 @@ public class BookController {
 	@PutMapping(value = "/update/book", produces = MediaType.APPLICATION_JSON_VALUE)
 	Book updateBookByTitle(@RequestBody Book book){
 		Book oldBook = bookRepository.findByTitle(book.getTitle());
+		if (oldBook == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Book found with this title");
 		book.setBookId(oldBook.getBookId());
 		return bookRepository.save(book);
 	}

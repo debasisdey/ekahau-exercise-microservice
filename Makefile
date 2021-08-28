@@ -44,6 +44,10 @@ docker_build_only:
 start_application_only:
 	docker-compose up -d
 
+.PHONY:start_mysql_db
+start_mysql_db:
+	docker run -dp 3306:3306  -e "MARIADB_ALLOW_EMPTY_PASSWORD=true" mysql-test-db
+
 
 
 
