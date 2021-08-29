@@ -4,6 +4,7 @@ import com.ekahau.exercise.user.User;
 import com.ekahau.exercise.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,8 @@ public class UserController {
 
 	@GetMapping(value="/find/user/{emailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
 	User getUserDetails(@PathVariable("emailAddress") String emailAddress){
+		if(!emailAddress.equalsIgnoreCase(getUserNameFromAuthentication()))
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorised for other user");
 		User user = userRepository.findByEmailAddress(emailAddress);
 		if (user == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No User found with the Email Address");
 		return user;
@@ -43,6 +46,8 @@ public class UserController {
 
 	@PutMapping(value = "/update/user", consumes = MediaType.APPLICATION_JSON_VALUE)
 	User updateUser(@RequestBody User user) {
+		if(!user.getEmailAddress().equalsIgnoreCase(getUserNameFromAuthentication()))
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorised for other user");
 		User oldUser = userRepository.findByEmailAddress(user.getEmailAddress());
 		if (oldUser == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No User found with the Email Address");
 		user.setUserId(oldUser.getUserId());
@@ -52,7 +57,13 @@ public class UserController {
 
 	@DeleteMapping(value = "/delete/user/{emailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
 	int deleteUser(@PathVariable("emailAddress") String emailAddress){
+		if(!emailAddress.equalsIgnoreCase(getUserNameFromAuthentication()))
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "You are not authorised for other user");
 		return userRepository.deleteAllByEmailAddress(emailAddress);
+	}
+
+	private String getUserNameFromAuthentication(){
+		return SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 
 }
