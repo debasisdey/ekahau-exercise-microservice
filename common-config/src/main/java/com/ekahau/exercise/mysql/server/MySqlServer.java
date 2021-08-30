@@ -5,10 +5,11 @@ import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 import org.apache.commons.io.FileUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.Arrays.asList;
 
 public class MySqlServer {
@@ -29,7 +31,12 @@ public class MySqlServer {
 	private static final String schemaName = "ekahau_exercise";
 
 	private String getStatement(String tableName) throws IOException {
-		return Files.readString(Path.of(this.getClass().getClassLoader().getResource("sqls/"+tableName+".sql").getPath()));
+		try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("sqls/"+tableName+".sql");
+			 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+			String contents = reader.lines()
+					.collect(joining(System.lineSeparator()));
+			return contents;
+		}
 	}
 
 	public MySqlServer() {
