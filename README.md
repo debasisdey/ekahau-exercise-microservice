@@ -6,6 +6,7 @@ This application has 3 modules :- \
 
 ###PreRequite:
 openJdk 11\
+gradle 6.9.X or above\
 docker\
 make - for unix system by default make will be installed.
 

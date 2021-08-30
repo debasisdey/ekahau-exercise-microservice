@@ -45,7 +45,7 @@ public class TestBookRepository {
 		Book book3 = bookRepository.findByTitle("My_test_title3");
 		List<Book> bookList = bookRepository.findAll();
 		assertThat(book1).extracting(Book::getAuthor).isEqualTo("Mu user test 1");
-		assertThat(book2).extracting(Book::getPrice).isEqualTo("200.00£");
+		assertThat(book2).extracting(Book::getPrice).isEqualTo("200.00");
 		assertThat(book3).extracting(Book::getYear).isEqualTo("2010");
 		assertThat(bookList).hasSize(3);
 	}
