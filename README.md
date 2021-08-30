@@ -18,13 +18,20 @@ make - for unix system by default make will be installed.
 you need to follow some manual steps for now:\
 go inside the project directory - **cd ekahau-exercise-microservice**
 1. **gradle clean build**\
-2. **docker build --no-cache -t mysql-test-db ./mysqldb**\
-3. **docker build --no-cache -t user-service ./user-service**\
-4. **docker build --no-cache -t book-service ./book-service**\
+2. **docker build --no-cache -t mysql-test-db ./mysqldb**
+3. **docker build --no-cache -t user-service ./user-service**
+4. **docker build --no-cache -t book-service ./book-service**
 5. **docker-compose up -d**
 
 ####In case docker is not installed -
-Load the project in any IDE as gradle project. Run MySqlServer.java file(Contains a main method). That will provide you necessary MySql env as a database.
+Load the project in any IDE as gradle project. Build the project.
+
+ 1. Go to project root directory - "ekahau-exercise-microservice"
+ 2. Start Mysql : Run MySqlServer.java file(Contains a main method).\
+   You can run that from IDE or by using **java -jar build/libs/common-config-1.0.jar**\
+ That will provide you necessary MySql env as a database.
+ 3. Start User Service :  Run ExerciseUserApplication from IDE or in another CMD window/Terminal run **java -jar user-service-1.0.jar**
+ 4. Start Book Service :  Run ExerciseBookApplication from IDE or in another CMD window/Terminal run **java -jar book-service-1.0.jar**
 
 ### Api Documentation
 [User Service API](http://localhost:8080/swagger-ui/)

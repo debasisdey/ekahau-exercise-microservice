@@ -12,7 +12,7 @@ build:
 
 .PHONY:stop_application
 stop_application:
-	docker-compose stop
+	docker-compose rm --stop
 
 .PHONY:start_application
 start_application:docker_build
