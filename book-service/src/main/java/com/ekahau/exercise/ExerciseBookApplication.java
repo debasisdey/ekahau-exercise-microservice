@@ -7,8 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ExerciseBookApplication {
 
 	public static void main(String[] args) {
-		//MySqlServer mySqlServer = new MySqlServer();
-		//mySqlServer.start();
 		SpringApplication.run(ExerciseBookApplication.class, args);
 	}
 
