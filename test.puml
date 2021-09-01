@@ -1,0 +1,22 @@
+@startuml
+participant Actor
+
+Actor -> RestAPICALL : http://localhost:8080/register/user
+RestAPICALL -> SpringSecurity : Basic Authentication
+activate SpringSecurity
+alt successful case
+    SpringSecurity -> UserController : registerUser
+    activate UserController
+    return user
+    UserController -> UserRepository : save(user)
+    activate UserRepository
+    return user
+    database MySqlDataBase
+    UserRepository -> MySqlDataBase : insert into user table
+    activate MySqlDataBase
+else authentication failure
+    SpringSecurity -> Actor : 401 un-authenticated
+end
+
+
+@enduml
