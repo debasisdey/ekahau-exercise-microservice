@@ -135,7 +135,7 @@ public class TestBookController {
 				.getForEntity(baseUrl, Book.class);
 		assertThat(result).extracting(ResponseEntity::getStatusCode).isEqualTo(HttpStatus.OK);
 
-		Book book = bookRepository.findByTitle(BOOK_TITLE_1);
+		Book book = result.getBody();
 		assertThat(book).extracting(Book::getPrice).isEqualTo("100.00");
 	}
 

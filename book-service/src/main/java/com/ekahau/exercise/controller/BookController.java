@@ -1,9 +1,8 @@
 package com.ekahau.exercise.controller;
 
 import com.ekahau.exercise.book.Book;
-import com.ekahau.exercise.book.BookRepository;
+import com.ekahau.exercise.service.BookDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,53 +12,47 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping ("/api/v1")
 public class BookController {
-	private final BookRepository bookRepository;
+	private final BookDetailsService bookDetailsService;
 
 	@Autowired
-	public BookController(BookRepository bookRepository) {
-		this.bookRepository = bookRepository;
+	public BookController(BookDetailsService bookDetailsService) {
+		this.bookDetailsService = bookDetailsService;
 	}
 
 	@PostMapping(value = "/register/book", consumes = MediaType.APPLICATION_JSON_VALUE)
 	Book registerBook(@RequestBody Book book){
-		return bookRepository.save(book);
+		return bookDetailsService.registerBook(book);
 	}
 
 	@GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
 	List<Book> getAllBooks(){
-		return  bookRepository.findAll();
+		return  bookDetailsService.getAllBooks();
 	}
 
 	@GetMapping(value = "/book/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
 	Book getBooksByTitle(@PathVariable String title){
-		Book book = bookRepository.findByTitle(title);
-		if (book == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Book found with this title");
-		return book;
+		return bookDetailsService.getBookByTitle(title);
 	}
 
 	@DeleteMapping(value = "/delete/all/books")
 	void deleteAllBooks(){
-		bookRepository.deleteAll();
+		bookDetailsService.deleteAllBooks();
 	}
 
 	@DeleteMapping(value = "/delete/book/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
 	int deleteBooksByTitle(@PathVariable String title){
-		return bookRepository.deleteByTitle(title);
+		return bookDetailsService.deleteBooksByTitle(title);
 	}
 
 	@PutMapping(value = "/update/book", produces = MediaType.APPLICATION_JSON_VALUE)
 	Book updateBookByTitle(@RequestBody Book book){
-		Book oldBook = bookRepository.findByTitle(book.getTitle());
-		if (oldBook == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Book found with this title");
-		book.setBookId(oldBook.getBookId());
-		return bookRepository.save(book);
+		return bookDetailsService.updateBooksByTitle(book);
 	}
 
 }
