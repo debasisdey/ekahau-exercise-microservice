@@ -44,3 +44,9 @@ go inside the project directory - **cd ekahau-exercise-microservice**
 All the required endpoints are Authenticated except -
 [**Register User**](http://localhost:8080/swagger-ui/#/user-controller/registerUserUsingPOST) : /api/v1/register/user
 
+### Troubleshooting
+* Sometimes if you are using older IDE versions then your "Annotation Processor" may not be enabled and you may see error in compilation.
+* Sometimes old gradle version is picked up from the IDE gradle settings.
+* Sometimes in windows systems, there can be build failure due to UTF-8 encoding issue. Due to the special characters are present in the customer name. Please make sure your IDE is using UTF-8 encoding for .sql and .txt files.
+* After import of the project make sure gradle build is success.
+* Gradle Build Success Image : ![build_success.png.png](doc/build_success.png)
