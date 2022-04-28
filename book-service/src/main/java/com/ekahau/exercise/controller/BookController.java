@@ -16,43 +16,44 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping ("/api/v1")
+@RequestMapping("/api/v1")
 public class BookController {
-	private final BookDetailsService bookDetailsService;
 
-	@Autowired
-	public BookController(BookDetailsService bookDetailsService) {
-		this.bookDetailsService = bookDetailsService;
-	}
+    private final BookDetailsService bookDetailsService;
 
-	@PostMapping(value = "/register/book", consumes = MediaType.APPLICATION_JSON_VALUE)
-	Book registerBook(@RequestBody Book book){
-		return bookDetailsService.registerBook(book);
-	}
+    @Autowired
+    public BookController(BookDetailsService bookDetailsService) {
+        this.bookDetailsService = bookDetailsService;
+    }
 
-	@GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
-	List<Book> getAllBooks(){
-		return  bookDetailsService.getAllBooks();
-	}
+    @PostMapping(value = "/register/book", consumes = MediaType.APPLICATION_JSON_VALUE)
+    Book registerBook(@RequestBody Book book) {
+        return bookDetailsService.registerBook(book);
+    }
 
-	@GetMapping(value = "/book/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
-	Book getBooksByTitle(@PathVariable String title){
-		return bookDetailsService.getBookByTitle(title);
-	}
+    @GetMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<Book> getAllBooks() {
+        return bookDetailsService.getAllBooks();
+    }
 
-	@DeleteMapping(value = "/delete/all/books")
-	void deleteAllBooks(){
-		bookDetailsService.deleteAllBooks();
-	}
+    @GetMapping(value = "/book/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
+    Book getBooksByTitle(@PathVariable String title) {
+        return bookDetailsService.getBookByTitle(title);
+    }
 
-	@DeleteMapping(value = "/delete/book/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
-	int deleteBooksByTitle(@PathVariable String title){
-		return bookDetailsService.deleteBooksByTitle(title);
-	}
+    @DeleteMapping(value = "/delete/all/books")
+    void deleteAllBooks() {
+        bookDetailsService.deleteAllBooks();
+    }
 
-	@PutMapping(value = "/update/book", produces = MediaType.APPLICATION_JSON_VALUE)
-	Book updateBookByTitle(@RequestBody Book book){
-		return bookDetailsService.updateBooksByTitle(book);
-	}
+    @DeleteMapping(value = "/delete/book/{title}", produces = MediaType.APPLICATION_JSON_VALUE)
+    int deleteBooksByTitle(@PathVariable String title) {
+        return bookDetailsService.deleteBooksByTitle(title);
+    }
+
+    @PutMapping(value = "/update/book", produces = MediaType.APPLICATION_JSON_VALUE)
+    Book updateBookByTitle(@RequestBody Book book) {
+        return bookDetailsService.updateBooksByTitle(book);
+    }
 
 }

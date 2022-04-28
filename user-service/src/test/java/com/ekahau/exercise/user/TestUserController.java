@@ -41,6 +41,7 @@ public class TestUserController {
 	private static final String TEST_EMAIL_ADDRESS =  "test@test.com";
 	private static final String TEST_PASSWORD =  "test";
 	private static final String USER_DATA_SQL = "classpath:/testdata/user/testuserdata.sql";
+	private static final String TRUNCATE_USER_SQL = "classpath:/testdata/user/truncateuser.sql";
 
 	@BeforeAll
 	static void runMysqlServer(){
@@ -48,6 +49,7 @@ public class TestUserController {
 	}
 
 	@Test
+	@Sql(TRUNCATE_USER_SQL)
 	public void shouldRegisterUserSuccessFully() throws URISyntaxException {
 		User u = User.of("test", "test last name", TEST_EMAIL_ADDRESS, TEST_PASSWORD);
 		final String baseUrl = LOCAL_BASE_URL + randomServerPort + "/api/v1/register/user";

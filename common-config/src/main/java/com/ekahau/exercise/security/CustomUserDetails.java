@@ -11,44 +11,45 @@ import static java.util.Arrays.asList;
 
 public class CustomUserDetails implements UserDetails {
 
-	private User user;
-	public CustomUserDetails(User user){
-		this.user = user;
-	}
+    private final User user;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
-		return asList(grantedAuthority);
-	}
+    public CustomUserDetails(User user) {
+        this.user = user;
+    }
 
-	@Override
-	public String getPassword() {
-		return user.getPassword();
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
+        return asList(grantedAuthority);
+    }
 
-	@Override
-	public String getUsername() {
-		return this.user.getEmailAddress();
-	}
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return this.user.getEmailAddress();
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

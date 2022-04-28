@@ -16,30 +16,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class UserController {
 
+    private final UserDetailsService userDetailsService;
 
-	private final UserDetailsService userDetailsService;
+    public UserController(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
-	public UserController(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
+    @PostMapping(value = "/register/user", consumes = MediaType.APPLICATION_JSON_VALUE)
+    User registerUser(@RequestBody User user) {
+        return userDetailsService.registerUser(user);
+    }
 
-	@PostMapping(value = "/register/user", consumes = MediaType.APPLICATION_JSON_VALUE)
-	User registerUser(@RequestBody User user){
-		return userDetailsService.registerUser(user);
-	}
+    @GetMapping(value = "/find/user/{emailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
+    User getUserDetails(@PathVariable("emailAddress") String emailAddress) {
+        return userDetailsService.getUserDetailsByEmailAddress(emailAddress);
+    }
 
-	@GetMapping(value="/find/user/{emailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
-	User getUserDetails(@PathVariable("emailAddress") String emailAddress){
-		return userDetailsService.getUserDetailsByEmailAddress(emailAddress);
-	}
+    @PutMapping(value = "/update/user", consumes = MediaType.APPLICATION_JSON_VALUE)
+    User updateUser(@RequestBody User user) {
+        return userDetailsService.updateUserDetails(user);
+    }
 
-	@PutMapping(value = "/update/user", consumes = MediaType.APPLICATION_JSON_VALUE)
-	User updateUser(@RequestBody User user) {
-		return userDetailsService.updateUserDetails(user);
-	}
-
-	@DeleteMapping(value = "/delete/user/{emailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
-	int deleteUser(@PathVariable("emailAddress") String emailAddress){
-		return userDetailsService.deleteUsersByEmailAddress(emailAddress);
-	}
+    @DeleteMapping(value = "/delete/user/{emailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
+    int deleteUser(@PathVariable("emailAddress") String emailAddress) {
+        return userDetailsService.deleteUsersByEmailAddress(emailAddress);
+    }
 }
